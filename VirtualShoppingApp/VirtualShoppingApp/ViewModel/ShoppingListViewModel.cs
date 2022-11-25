@@ -19,6 +19,7 @@ namespace VirtualShoppingApp.ViewModel
         public Product SelectedProduct { get; set; }
         public string Message { get; set; }
         public RelayCommand ApplyChangesCommand { get; set; }
+        public RelayCommand<string> SearchCommand { get; set; }
         public RelayCommand<int> ChangeVisibilityCommand { get; set; }
         public bool IsBusy { get; set; }
 
@@ -26,14 +27,17 @@ namespace VirtualShoppingApp.ViewModel
         public ShoppingListViewModel()
         {
             ShoppingList = new ObservableCollection<Category>();
-
+            ContextHelper.fillContext();
             categoryService = new CategoryService();
+            
             ApplyChangesCommand = new RelayCommand(applyChanges);
+            SearchCommand = new RelayCommand<string>(search);
             ChangeVisibilityCommand = new RelayCommand<int>(changeVisibility);
-            loadData();
+            
+            loadData(null);
         }
 
-        private void loadData()
+        private void loadData(string query)
         {
             IsBusy = true;
             Task.Run(async () =>
@@ -41,7 +45,10 @@ namespace VirtualShoppingApp.ViewModel
                 try
                 {
                     Thread.Sleep(1000);
-                    ShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListJoined());
+                    if(query == null)
+                        ShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListJoined());
+                    else
+                        ShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListSearched(query));
                 }
                 catch (Exception ex)
                 {
@@ -57,7 +64,12 @@ namespace VirtualShoppingApp.ViewModel
         {
             IsBusy = true;
             await categoryService.setShoppingListChanges(ShoppingList.ToList());
-            loadData();
+            loadData(null);
+        }
+
+        private void search(string searchBlock)
+        {
+            loadData(searchBlock);
         }
 
         private void changeVisibility(int categoryID)

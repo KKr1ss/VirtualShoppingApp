@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualShoppingApp.iOS", "V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualShoppingApp", "VirtualShoppingApp\VirtualShoppingApp\VirtualShoppingApp.csproj", "{FA39A3B5-01B7-4F83-89C3-0B1C0B19DDC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualShoppingApp.XTest", "VirtualShoppingApp.XTest\VirtualShoppingApp.XTest.csproj", "{1B251C0D-8665-47ED-97F0-7C29ABE9C481}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualShoppingApp.XTest", "VirtualShoppingApp.XTest\VirtualShoppingApp.XTest.csproj", "{1B251C0D-8665-47ED-97F0-7C29ABE9C481}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -137,6 +137,22 @@ namespace VirtualShoppingApp.Test.Model.Service
             Assert.True(isPassed);
         }
 
+        [Theory]
+        [InlineData("hú",2)] 
+        [InlineData("hosszabbító", 1)]
+        [InlineData("nincs találat sajna", 0)]
+        public async void getShoppingListSearched_TestHu(string query, int expectedNumberOfCategories)
+        {
+            //Arrenge
+            CategoryService categoryService = new CategoryService(TestHelper.getFilledShoppingContext());
+
+            //Act
+            var actualList = await categoryService.getShoppingListSearched(query);
+            int actualListCount = actualList.Count;
+            //Assert
+            Assert.Equal(expectedNumberOfCategories, actualListCount);
+        }
+
         //[Fact]
         //public async void _Test()
         //{

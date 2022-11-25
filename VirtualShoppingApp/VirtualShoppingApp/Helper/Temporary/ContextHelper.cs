@@ -40,7 +40,7 @@ namespace VirtualShoppingApp.Helper.Temporary
                 new Category
                 {
                     ID = 4,
-                    CategoryName = "Nem megbízható bolt",
+                    CategoryName = "Hallucinogén szerek amelyet nem veszünk",
                     CreatedDate = new DateTime(2022, 11, 22),
                     IsReady = false
                 }

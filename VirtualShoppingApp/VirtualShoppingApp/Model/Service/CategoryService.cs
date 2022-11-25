@@ -27,6 +27,30 @@ namespace VirtualShoppingApp.Model.Service
             return _context.Categories.ToList();
         }
 
+        public async Task<List<Category>> getShoppingListSearched(string query)
+        {
+            List<Category> shoppingListResult = new List<Category>();
+            try
+            {
+                var shoppingListSearched = new List<Category>();
+
+                foreach(Category category in await getShoppingListJoined())
+                {
+                    if (category.Products.Any(p => p.ProductName.ToLower().Contains(query.ToLower())))
+                    {
+                        category.Products = category.Products.Where(p => p.ProductName.ToLower().Contains(query.ToLower())).ToList();
+                        shoppingListSearched.Add(category);
+                    }
+                }
+                shoppingListResult = shoppingListSearched;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return await Task.FromResult(shoppingListResult);
+        }
+
         public async Task<List<Category>> getShoppingListJoined()
         {
             List<Category> categoriesJoined = new List<Category>();

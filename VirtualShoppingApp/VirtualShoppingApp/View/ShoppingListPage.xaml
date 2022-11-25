@@ -1,36 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behavior="clr-namespace:VirtualShoppingApp.Behaviours"
              x:Class="VirtualShoppingApp.View.ShoppingListPage">
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="1*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="2*"/>
                 <RowDefinition Height="66*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
-                <RowDefinition Height="10"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="98*"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            
+
             <Label Text="Bevásárló lista app"
                    Grid.Row="1"
                    Grid.Column="1"/>
 
+            <SearchBar x:Name="srchBrProducts"
+                       Grid.Row="2"
+                        Grid.Column="1">
+                <SearchBar.Behaviors>
+                    <behavior:EventToCommandBehavior EventName="TextChanged"
+                                                     Command="{Binding SearchCommand}"
+                                                     CommandParameter="{Binding Text, Source={x:Reference srchBrProducts}}">
+                    </behavior:EventToCommandBehavior>
+                </SearchBar.Behaviors>
+            </SearchBar>
+
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                               Grid.Row="2"
+                               Grid.Row="3"
                                Grid.Column="1"/>
 
             <ListView x:Name="lstVwShoppingList"
                       ItemsSource="{Binding ShoppingList, Mode=TwoWay}"
                       SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
-                      Grid.Row="3"
+                      Grid.Row="4"
                       Grid.Column="1"
                       SelectionMode="None">
                 <ListView.ItemTemplate>
@@ -47,27 +60,26 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
                                               Grid.Column="0"
                                               Grid.Row="0"/>
                                 <Label Text="{Binding CategoryName}"
                                            Grid.Column="1"
                                            Grid.Row="0"/>
-                                <Button Text="\/"
+                                <Button Text="Kinyit/összecsuk"
                                         Grid.Column="2"
                                         Grid.Row="0"
-                                        
                                         Command="{Binding BindingContext.ChangeVisibilityCommand, Source={x:Reference lstVwShoppingList}}"
                                         CommandParameter="{Binding ID}"/>
                                 <Button Text="+"
                                         Grid.Column="3"
                                         Grid.Row="0"/>
                                 <StackLayout BindableLayout.ItemsSource="{Binding Products, Mode=TwoWay}" 
-                                                 Grid.Column="1"
-                                            Grid.Row="1"
-                                            Grid.ColumnSpan="3"
-                                            IsVisible="{Binding IsVisible, Mode=TwoWay}">
+                                             Grid.Column="1"
+                                             Grid.Row="1"
+                                             Grid.ColumnSpan="3"
+                                             IsVisible="{Binding IsVisible, Mode=TwoWay}">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <Grid>
@@ -97,13 +109,13 @@
             </ListView>
             <Label x:Name="lblMessage"
                    Text="{Binding Message, Mode=TwoWay}"
-                   Grid.Row="4"
+                   Grid.Row="5"
                    Grid.Column="1"/>
             <Button x:Name="btnApplyChanges"
                     Text="Apply changes"
                     Command="{Binding ApplyChangesCommand}"
                     BackgroundColor="Green"
-                    Grid.Row="5"
+                    Grid.Row="6"
                     Grid.Column="1"/>
         </Grid>
     </ContentPage.Content>
