@@ -5,51 +5,102 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Bevásárló lista app"/>
+
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
-            <ScrollView>
-                <ListView x:Name="lstVwShoppingList"
+
+            <ListView x:Name="lstVwShoppingList"
                       ItemsSource="{Binding ShoppingList, Mode=TwoWay}"
                       SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto"/>
-                                        <RowDefinition Height="auto"/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-
-                                    <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
                                               Grid.Column="0"
                                               Grid.Row="0"/>
-                                    <Label Text="{Binding CategoryName}"
+                                <Label Text="{Binding CategoryName}"
                                            Grid.Column="1"
                                            Grid.Row="0"/>
-                                    <ListView ItemsSource="{Binding Products, Mode=TwoWay}"
+                                <Button Text="\/"
+                                        Grid.Column="2"
+                                        Grid.Row="0"
+                                        
+                                        Command="{Binding BindingContext.ChangeVisibilityCommand, Source={x:Reference lstVwShoppingList}}"
+                                        CommandParameter="{Binding ID}"/>
+                                <Button Text="+"
+                                        Grid.Column="3"
+                                        Grid.Row="0"/>
+                                <StackLayout BindableLayout.ItemsSource="{Binding Products, Mode=TwoWay}" 
+                                                 Grid.Column="1"
+                                            Grid.Row="1"
+                                            Grid.ColumnSpan="3"
+                                            IsVisible="{Binding IsVisible, Mode=TwoWay}">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="auto"/>
+                                                    <ColumnDefinition Width="auto"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
+                                                              Grid.Row="0"
+                                                              Grid.Column="0"/>
+                                                <Label Text="{Binding ProductName}" 
+                                                           FontSize="Small"
+                                                           Grid.Row="0"
+                                                           Grid.Column="1"/>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                                <!--<ListView ItemsSource="{Binding Products, Mode=TwoWay}"
                                           SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                                           Grid.Column="1"
-                                          Grid.Row="1">
-                                        <ListView.ItemTemplate>
-                                            <DataTemplate>
-                                                <ViewCell>
-                                                    <StackLayout Orientation="Horizontal">
-                                                        <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"/>
-                                                        <Label Text="{Binding ProductName}"/>
-                                                    </StackLayout>
-                                                </ViewCell>
-                                            </DataTemplate>
-                                        </ListView.ItemTemplate>
-                                    </ListView>
-                                </Grid>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollView>
+                                          Grid.Row="1"
+                                          Grid.ColumnSpan="2">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="auto"/>
+                                                        <ColumnDefinition Width="auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
+                                                                  Grid.Column="0"
+                                                                  Grid.Row="0"/>
+                                                    <Label Text="{Binding ProductName}"
+                                                               Grid.Column="1"
+                                                               Grid.Row="0"/>
+                                                </Grid>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>-->
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             <Label x:Name="lblMessage"
                    Text="{Binding Message, Mode=TwoWay}"/>
             <Button x:Name="btnApplyChanges"

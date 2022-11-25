@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using VirtualShoppingApp.ViewModel.Base;
 
 namespace VirtualShoppingApp.Model
 {
-    public class Product
+    public class Product : BaseViewModel
     {
         public int ID { get; set; }
         public int CategoryID { get; set; }

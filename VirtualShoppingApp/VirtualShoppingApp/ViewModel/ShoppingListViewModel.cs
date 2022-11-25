@@ -8,6 +8,7 @@ using VirtualShoppingApp.ViewModel.Base;
 using VirtualShoppingApp.Helper.Temporary;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace VirtualShoppingApp.ViewModel
 {
@@ -18,6 +19,7 @@ namespace VirtualShoppingApp.ViewModel
         public Product SelectedProduct { get; set; }
         public string Message { get; set; }
         public RelayCommand ApplyChangesCommand { get; set; }
+        public RelayCommand<int> ChangeVisibilityCommand { get; set; }
         public bool IsBusy { get; set; }
 
         CategoryService categoryService;
@@ -27,6 +29,7 @@ namespace VirtualShoppingApp.ViewModel
 
             categoryService = new CategoryService();
             ApplyChangesCommand = new RelayCommand(applyChanges);
+            ChangeVisibilityCommand = new RelayCommand<int>(changeVisibility);
             loadData();
         }
 
@@ -37,7 +40,7 @@ namespace VirtualShoppingApp.ViewModel
             {
                 try
                 {
-                    Thread.Sleep(2000);
+                    Thread.Sleep(1000);
                     ShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListJoined());
                 }
                 catch (Exception ex)
@@ -50,10 +53,19 @@ namespace VirtualShoppingApp.ViewModel
             });
         }
 
-        private void applyChanges()
+        private async void applyChanges()
         {
-            
+            IsBusy = true;
+            await categoryService.setShoppingListChanges(ShoppingList.ToList());
             loadData();
+        }
+
+        private void changeVisibility(int categoryID)
+        {
+            if (ShoppingList.FirstOrDefault(s => s.ID == categoryID).IsVisible)
+                ShoppingList.FirstOrDefault(s => s.ID == categoryID).IsVisible = false;
+            else
+                ShoppingList.FirstOrDefault(s => s.ID == categoryID).IsVisible = true;
         }
     }
 }
