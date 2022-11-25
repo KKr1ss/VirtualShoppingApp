@@ -3,14 +3,36 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VirtualShoppingApp.View.ShoppingListPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Bevásárló lista app"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="66*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="10"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="98*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Text="Bevásárló lista app"
+                   Grid.Row="1"
+                   Grid.Column="1"/>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                               Grid.Row="2"
+                               Grid.Column="1"/>
 
             <ListView x:Name="lstVwShoppingList"
                       ItemsSource="{Binding ShoppingList, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}">
+                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
+                      Grid.Row="3"
+                      Grid.Column="1"
+                      SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -68,45 +90,21 @@
                                         </DataTemplate>
                                     </BindableLayout.ItemTemplate>
                                 </StackLayout>
-                                <!--<ListView ItemsSource="{Binding Products, Mode=TwoWay}"
-                                          SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
-                                          Grid.Column="1"
-                                          Grid.Row="1"
-                                          Grid.ColumnSpan="2">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="auto"/>
-                                                        <ColumnDefinition Width="auto"/>
-                                                    </Grid.ColumnDefinitions>
-
-                                                    <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
-                                                                  Grid.Column="0"
-                                                                  Grid.Row="0"/>
-                                                    <Label Text="{Binding ProductName}"
-                                                               Grid.Column="1"
-                                                               Grid.Row="0"/>
-                                                </Grid>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>-->
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
             <Label x:Name="lblMessage"
-                   Text="{Binding Message, Mode=TwoWay}"/>
+                   Text="{Binding Message, Mode=TwoWay}"
+                   Grid.Row="4"
+                   Grid.Column="1"/>
             <Button x:Name="btnApplyChanges"
                     Text="Apply changes"
                     Command="{Binding ApplyChangesCommand}"
-                    BackgroundColor="Green"/>
-        </StackLayout>
+                    BackgroundColor="Green"
+                    Grid.Row="5"
+                    Grid.Column="1"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
