@@ -10,13 +10,21 @@ namespace VirtualShoppingApp.Model.Service
     public class CategoryService
     {
         ShoppingContext _context;
+        ProductService productService;
         public CategoryService()
         {
             _context = new ShoppingContext();
+            productService = new ProductService();
         }
         public CategoryService(ShoppingContext context)
         {
             _context = context;
+            productService = new ProductService(context);
+        }
+
+        public List<Category> GetCategories()
+        {
+            return _context.Categories.ToList();
         }
 
         public async Task<List<Category>> getShoppingListJoined()
@@ -36,11 +44,52 @@ namespace VirtualShoppingApp.Model.Service
                 }
                 categoriesJoined.AddRange(categories);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
             return await Task.FromResult(categoriesJoined);
+        }
+
+        public async Task<bool> setShoppingListChanges(List<Category> shoppingListToUpdate)
+        {
+            bool isSaved = false;
+            try
+            {
+                await setCategoryChanges(shoppingListToUpdate);
+                var products = productService.getEveryProductFromShoppingList(shoppingListToUpdate);
+                await productService.setProductChanges(products);
+                
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSaved;
+        }
+
+        public async Task<bool> setCategoryChanges(List<Category> categoriesToUpdate)
+        {
+            bool isSaved = false;
+            try
+            {
+                foreach (Category category in categoriesToUpdate)
+                {
+                    var categoryToUpdate = await _context.Categories.FirstOrDefaultAsync(c => c.ID == category.ID);
+                    categoryToUpdate.CreatedDate = category.CreatedDate;
+                    categoryToUpdate.CategoryName = category.CategoryName;
+                    categoryToUpdate.IsReady = category.IsReady;
+                }
+                await _context.SaveChangesAsync();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return isSaved;
         }
     }
 }

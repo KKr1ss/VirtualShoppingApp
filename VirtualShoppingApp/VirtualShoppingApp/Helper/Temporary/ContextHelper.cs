@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using VirtualShoppingApp.Data;
 using VirtualShoppingApp.Model;
@@ -11,6 +12,8 @@ namespace VirtualShoppingApp.Helper.Temporary
         public static void fillContext()
         {
             ShoppingContext _context = new ShoppingContext();
+            _context.Categories.RemoveRange(_context.Categories.ToList());
+            _context.Products.RemoveRange(_context.Products.ToList());
 
             _context.Categories.AddRange(
                 new Category
@@ -32,6 +35,13 @@ namespace VirtualShoppingApp.Helper.Temporary
                     ID = 3,
                     CategoryName = "Műszaki",
                     CreatedDate = DateTime.Now,
+                    IsReady = false
+                },
+                new Category
+                {
+                    ID = 4,
+                    CategoryName = "Nem megbízható bolt",
+                    CreatedDate = new DateTime(2022, 11, 22),
                     IsReady = false
                 }
             );

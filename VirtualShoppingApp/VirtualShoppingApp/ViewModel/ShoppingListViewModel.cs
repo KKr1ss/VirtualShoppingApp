@@ -52,7 +52,8 @@ namespace VirtualShoppingApp.ViewModel
 
         private void applyChanges()
         {
-
+            
+            loadData();
         }
     }
 }

@@ -20,27 +20,56 @@ namespace VirtualShoppingApp.Test
                .UseSqlite(conn)
                .Options;
             ShoppingContext testContext = new ShoppingContext(options);
-            
-            testContext.Categories.AddRange(
+
+            testContext.Categories.AddRange(getTestCategories());
+            testContext.Products.AddRange(getTestProducts());
+
+            testContext.SaveChanges();
+
+            return testContext;
+        }
+
+        public static List<Category> getTestJoinedShopplingList()
+        {
+            var testCategories = getTestCategories();
+            var testProducts = getTestProducts();
+            foreach(Category category in testCategories)
+            {
+                category.Products = testProducts.Where(tp => tp.CategoryID == category.ID).ToList();
+            }
+            return testCategories;
+        }
+
+        public static List<Category> getTestCategories()
+        {
+            var testCategories = new List<Category>()
+            {
                 new Category
                 {
                     ID = 1,
                     CategoryName = "Elektronika",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2022,11,25),
                     IsReady = false
                 },
                 new Category
                 {
                     ID = 2,
                     CategoryName = "Élelmiszer",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2022,11,24),
                     IsReady = true
                 },
                 new Category
                 {
                     ID = 3,
                     CategoryName = "Műszaki",
-                    CreatedDate = DateTime.Now,
+                    CreatedDate = new DateTime(2022,11,25),
+                    IsReady = false
+                },
+                new Category
+                {
+                    ID = 4,
+                    CategoryName = "Nem megbízható bolt",
+                    CreatedDate = new DateTime(2022,11,22),
                     IsReady = false
                 }
                 //new Store
@@ -51,9 +80,14 @@ namespace VirtualShoppingApp.Test
                 //    CreatedDate = DateTime.Now,
                 //    IsReady = false
                 //}
-            );
+            };
+            return testCategories;
+        }
 
-            testContext.Products.AddRange(
+        public static List<Product> getTestProducts()
+        {
+            var testProducts = new List<Product>()
+            {
                 new Product()
                 {
                     ID = 1,
@@ -117,11 +151,8 @@ namespace VirtualShoppingApp.Test
                 //    Quantity = ,
                 //    IsReady = false
                 //}
-            );
-
-            testContext.SaveChanges();
-
-            return testContext;
+            };
+            return testProducts;
         }
     }
 }
