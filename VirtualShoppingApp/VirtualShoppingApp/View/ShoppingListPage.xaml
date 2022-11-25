@@ -5,7 +5,7 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Bevásárló lista app"/>
-
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"/>
             <ScrollView>
                 <ListView x:Name="lstVwShoppingList"
                       ItemsSource="{Binding ShoppingList, Mode=TwoWay}"
@@ -24,11 +24,11 @@
                                     </Grid.ColumnDefinitions>
 
                                     <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
-                                          Grid.Column="0"
-                                          Grid.Row="0"/>
+                                              Grid.Column="0"
+                                              Grid.Row="0"/>
                                     <Label Text="{Binding CategoryName}"
-                                       Grid.Column="1"
-                                       Grid.Row="0"/>
+                                           Grid.Column="1"
+                                           Grid.Row="0"/>
                                     <ListView ItemsSource="{Binding Products, Mode=TwoWay}"
                                           SelectedItem="{Binding SelectedProduct, Mode=TwoWay}"
                                           Grid.Column="1"
@@ -50,6 +50,12 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </ScrollView>
+            <Label x:Name="lblMessage"
+                   Text="{Binding Message, Mode=TwoWay}"/>
+            <Button x:Name="btnApplyChanges"
+                    Text="Apply changes"
+                    Command="{Binding ApplyChangesCommand}"
+                    BackgroundColor="Green"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

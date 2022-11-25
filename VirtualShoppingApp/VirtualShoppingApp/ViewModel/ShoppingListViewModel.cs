@@ -6,6 +6,8 @@ using VirtualShoppingApp.Model.Service;
 using VirtualShoppingApp.Model;
 using VirtualShoppingApp.ViewModel.Base;
 using VirtualShoppingApp.Helper.Temporary;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace VirtualShoppingApp.ViewModel
 {
@@ -15,26 +17,42 @@ namespace VirtualShoppingApp.ViewModel
         public Category SelectedCategory { get; set; }
         public Product SelectedProduct { get; set; }
         public string Message { get; set; }
+        public RelayCommand ApplyChangesCommand { get; set; }
+        public bool IsBusy { get; set; }
+
         CategoryService categoryService;
         public ShoppingListViewModel()
         {
+            ShoppingList = new ObservableCollection<Category>();
+
             categoryService = new CategoryService();
+            ApplyChangesCommand = new RelayCommand(applyChanges);
             loadData();
         }
 
-        private async void loadData()
+        private void loadData()
         {
-            var newShoppingList = new ObservableCollection<Category>();
-            try
+            IsBusy = true;
+            Task.Run(async () =>
             {
-                newShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListJoined());
-            }
-            catch (Exception ex)
-            {
-                Message = "Sikertelen betöltés";
-                throw ex;
-            }
-            ShoppingList = newShoppingList;
+                try
+                {
+                    Thread.Sleep(2000);
+                    ShoppingList = new ObservableCollection<Category>(await categoryService.getShoppingListJoined());
+                }
+                catch (Exception ex)
+                {
+                    Message = "Hiba: sikertelen betöltés!";
+                    IsBusy = false;
+                    throw ex;
+                }
+                IsBusy = false;
+            });
+        }
+
+        private void applyChanges()
+        {
+
         }
     }
 }
