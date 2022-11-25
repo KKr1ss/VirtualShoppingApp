@@ -27,6 +27,56 @@ namespace VirtualShoppingApp.Model.Service
             return _context.Categories.ToList();
         }
 
+        public bool addOrEditCategory(Category category)
+        {
+            bool isSaved = false;
+            try
+            {
+                if (category.ID == 0)
+                {
+                    category.CreatedDate = DateTime.Now;
+                    _context.Categories.Add(category);
+                } 
+                else
+                {
+                    var categoryToUpdate = _context.Categories.First(c => c.ID == category.ID);
+                    categoryToUpdate.CategoryName = category.CategoryName;
+                    categoryToUpdate.CreatedDate = category.CreatedDate;
+                    categoryToUpdate.IsReady = category.IsReady;
+                }
+                _context.SaveChanges();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return isSaved;
+        }
+
+        public bool removeCategory(Category category)
+        {
+            bool isSaved = false;
+            try
+            {
+                var productsToRemove = _context.Products.Where(p => p.CategoryID == category.ID).ToList();
+                
+                foreach(var product in productsToRemove)
+                {
+                    productService.removeProduct(product);
+                }
+                _context.Categories.Remove(_context.Categories.FirstOrDefault(c => c.ID == category.ID));
+                _context.SaveChanges();
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSaved;
+        }
+
         public async Task<List<Category>> getShoppingListSearched(string query)
         {
             List<Category> shoppingListResult = new List<Category>();

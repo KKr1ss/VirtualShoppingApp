@@ -2,15 +2,18 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:behavior="clr-namespace:VirtualShoppingApp.Behaviours"
-             x:Class="VirtualShoppingApp.View.ShoppingListPage">
+             x:Class="VirtualShoppingApp.View.ShoppingListPage"
+             Background="Beige">
+
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
+                <RowDefinition Height="4*"/>
                 <RowDefinition Height="5*"/>
-                <RowDefinition Height="5*"/>
+                <RowDefinition Height="7*"/>
                 <RowDefinition Height="2*"/>
-                <RowDefinition Height="66*"/>
+                <RowDefinition Height="60*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="1*"/>
@@ -36,16 +39,24 @@
                 </SearchBar.Behaviors>
             </SearchBar>
 
+            <Button x:Name="btnAddCategory"
+                    Text="Kategória hozzáadása"
+                    Background="mediumpurple"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    Clicked="btnAddCategory_Clicked"/>
+
             <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                               Grid.Row="3"
+                               Grid.Row="4"
                                Grid.Column="1"/>
 
             <ListView x:Name="lstVwShoppingList"
                       ItemsSource="{Binding ShoppingList, Mode=TwoWay}"
-                      SelectedItem="{Binding SelectedCategory, Mode=TwoWay}"
-                      Grid.Row="4"
+                      Grid.Row="5"
                       Grid.Column="1"
-                      SelectionMode="None">
+                      SelectionMode="None"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -55,10 +66,10 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="40*"/>
+                                    <ColumnDefinition Width="36*"/>
+                                    <ColumnDefinition Width="10*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
@@ -67,41 +78,84 @@
                                 <Label Text="{Binding CategoryName}"
                                            Grid.Column="1"
                                            Grid.Row="0"/>
-                                <Button Text="Kinyit/összecsuk"
-                                        Grid.Column="2"
+
+                                <Button Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        BackgroundColor="Transparent" TextColor="Transparent"
                                         Grid.Row="0"
                                         Command="{Binding BindingContext.ChangeVisibilityCommand, Source={x:Reference lstVwShoppingList}}"
                                         CommandParameter="{Binding ID}"/>
-                                <Button Text="+"
+                                <StackLayout Grid.Column="2"
+                                             Grid.Row="0"
+                                             HorizontalOptions="Start"
+                                             Orientation="Horizontal">
+                                    <Button Text="Szerkesztés"
+                                        Clicked="btnAddCategory_Clicked"
+                                        CommandParameter="{Binding .}"        
+                                        Background="mediumpurple"/>
+                                    <Button Text="Törlés"
+                                            Command="{Binding BindingContext.RemoveCategoryCommand, Source={x:Reference lstVwShoppingList}}"
+                                            CommandParameter="{Binding .}"
+                                            Background="DarkSalmon"/>
+                                </StackLayout>
+                                <Button Text="Hozzáadás"
                                         Grid.Column="3"
-                                        Grid.Row="0"/>
-                                <StackLayout BindableLayout.ItemsSource="{Binding Products, Mode=TwoWay}" 
-                                             Grid.Column="1"
+                                        Grid.Row="0"
+                                        Clicked="btnAddProduct_Clicked"
+                                        CommandParameter="{Binding ID}"
+                                        Background="Lavender"/>
+                                
+                                <ScrollView Grid.Column="1"
                                              Grid.Row="1"
-                                             Grid.ColumnSpan="3"
+                                             Grid.ColumnSpan="4"
                                              IsVisible="{Binding IsVisible, Mode=TwoWay}">
-                                    <BindableLayout.ItemTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="auto"/>
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="auto"/>
-                                                    <ColumnDefinition Width="auto"/>
-                                                </Grid.ColumnDefinitions>
+                                    <StackLayout BindableLayout.ItemsSource="{Binding Products, Mode=TwoWay}" VerticalOptions="CenterAndExpand">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,10,0,10">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="5*"/>
+                                                        <ColumnDefinition Width="30*"/>
+                                                        <ColumnDefinition Width="20*"/>
+                                                        <ColumnDefinition Width="20*"/>
+                                                        <ColumnDefinition Width="5*"/>
+                                                    </Grid.ColumnDefinitions>
 
-                                                <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
+                                                    <CheckBox IsChecked="{Binding IsReady,Mode=TwoWay}"
                                                               Grid.Row="0"
                                                               Grid.Column="0"/>
-                                                <Label Text="{Binding ProductName}" 
+                                                    
+                                                    <Label Text="{Binding ProductName}" 
                                                            FontSize="Small"
                                                            Grid.Row="0"
                                                            Grid.Column="1"/>
-                                            </Grid>
-                                        </DataTemplate>
-                                    </BindableLayout.ItemTemplate>
-                                </StackLayout>
+                                                    <Label Text="{Binding Quantity}" 
+                                                           Grid.Row="0"
+                                                           Grid.Column="2"
+                                                           HorizontalOptions="StartAndExpand"/>
+
+                                                    <StackLayout Grid.Row="0"
+                                                                 Grid.Column="3"
+                                                                 HorizontalOptions="StartAndExpand"
+                                                                 Orientation="Horizontal">
+                                                        <Button Text="Szerkesztés"
+                                                            Clicked="btnAddProduct_Clicked"
+                                                            CommandParameter="{Binding .}"
+                                                            Background="Lavender"/>
+                                                        <Button Text="Törlés"
+                                                            Command="{Binding BindingContext.RemoveProductCommand, Source={x:Reference lstVwShoppingList}}"
+                                                            CommandParameter="{Binding .}"
+                                                            Background="DarkSalmon"/>
+                                                    </StackLayout>
+                                                    
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+                                </ScrollView>
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -109,14 +163,14 @@
             </ListView>
             <Label x:Name="lblMessage"
                    Text="{Binding Message, Mode=TwoWay}"
-                   Grid.Row="5"
+                   Grid.Row="6"
                    Grid.Column="1"/>
             <Button x:Name="btnApplyChanges"
-                    Text="Apply changes"
+                    Text="Változtatások mentése"
                     Command="{Binding ApplyChangesCommand}"
-                    BackgroundColor="Green"
-                    Grid.Row="6"
-                    Grid.Column="1"/>
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    BackgroundColor="Lime"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

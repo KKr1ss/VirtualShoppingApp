@@ -3,6 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VirtualShoppingApp.App">
     <Application.Resources>
-
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value ="Black"/>
+            <Setter Property="FontSize" Value="Small"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value ="DarkSlateGray"/>
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="CornerRadius" Value="5"/>
+        </Style>
+        <Style TargetType="Entry">
+            <Setter Property="Background" Value="LightSlateGray"/>
+        </Style>
+        <Style TargetType="SearchBar">
+            <Setter Property="Background" Value="LightSlateGray"/>
+        </Style>
+        
     </Application.Resources>
 </Application>

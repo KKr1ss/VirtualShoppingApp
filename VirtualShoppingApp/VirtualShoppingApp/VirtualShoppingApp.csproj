@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.31" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
     <PackageReference Include="System.Numerics.Vectors" Version="4.5.0" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
@@ -19,6 +20,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="View\AddOrEditCategoryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="View\AddOrEditProductPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="View\ShoppingListPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>

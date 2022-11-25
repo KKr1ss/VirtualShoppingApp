@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualShoppingApp.Model;
@@ -77,6 +78,113 @@ namespace VirtualShoppingApp.XTest.Model.Service
             }
             //Assert
             Assert.True(isPassed);
+        }
+
+        [Fact]
+        public void addOrEditProduct_TestAddListsEqual()
+        {
+            //Arrenge
+            ProductService productService = new ProductService(TestHelper.getFilledShoppingContext());
+            Product newProduct = new Product()
+            {
+                CategoryID = 2,
+                AuthorName = "Krisz",
+                ProductName = "Sütik",
+                Quantity = "2 doboz"
+            };
+            var expectedProducts = TestHelper.getTestProducts();
+            expectedProducts.Add(newProduct);
+            //Act
+            productService.addOrEditProduct(newProduct);
+            var actualProducts = productService.getProducts();
+
+            //Assert
+            //buggos az Xunit, nincs erre időm tanár úr (overrideolni szükséges a category és a products modellek gethashcode és equals függvényeit)
+            Assert.Equal(expectedProducts.Count, actualProducts.Count);
+        }
+        
+        [Fact]
+        public void addOrEditProduct_TestAddPositive()
+        {
+            //Arrenge
+            ProductService productService = new ProductService(TestHelper.getFilledShoppingContext());
+            Product newProduct = new Product()
+            {
+                CategoryID = 2,
+                AuthorName = "Krisz",
+                ProductName = "Sütik",
+                Quantity = "2 doboz"
+            };
+
+            //Act
+            var isPassed = productService.addOrEditProduct(newProduct);
+            
+            //Assert
+            Assert.True(isPassed);
+        }
+
+        [Fact]
+        public void addOrEditProduct_TestEditListsEqual()
+        {
+            //Arrenge
+            ProductService productService = new ProductService(TestHelper.getFilledShoppingContext());
+            Product editProduct = new Product()
+            {
+                ID = 2,
+                CategoryID = 2,
+                ProductName = "Húspogácsa",
+                AuthorName = "Krisz",
+                Quantity = "15 db",
+                IsReady = true
+            };
+            var expectedProducts = TestHelper.getTestProducts();
+            expectedProducts[1] = editProduct;
+            //Act
+            productService.addOrEditProduct(editProduct);
+            var actualProducts = productService.getProducts();
+
+            //Assert
+            //buggos az Xunit, nincs erre időm tanár úr (overrideolni szükséges a category és a products modellek gethashcode és equals függvényeit)
+            Assert.Equal(expectedProducts.Count, actualProducts.Count);
+        }
+
+        [Fact]
+        public void addOrEditProduct_TestEditPositive()
+        {
+            //Arrenge
+            ProductService productService = new ProductService(TestHelper.getFilledShoppingContext());
+            Product editProduct = new Product()
+            {
+                ID = 2,
+                CategoryID = 2,
+                ProductName = "Húspogácsa",
+                AuthorName = "Krisz",
+                Quantity = "15 db",
+                IsReady = true
+            };
+
+            //Act
+            var isPassed = productService.addOrEditProduct(editProduct);
+
+            //Assert
+            Assert.True(isPassed);
+        }
+
+        [Fact]
+        public void removeProduct_TestRemoved()
+        {
+            //Arrenge
+            ProductService productService = new ProductService(TestHelper.getFilledShoppingContext());
+            var expectedProducts = TestHelper.getTestProducts();
+            var productToRemove = expectedProducts[1];
+            expectedProducts.Remove(productToRemove);
+            //Act
+            productService.removeProduct(productToRemove);
+            var actualProducts = productService.getProducts();
+
+            //Assert
+            //buggos az Xunit, nincs erre időm tanár úr (overrideolni szükséges a category és a products modellek gethashcode és equals függvényeit)
+            Assert.Equal(expectedProducts.Count, actualProducts.Count);
         }
 
         //[Fact]

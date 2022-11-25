@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VirtualShoppingApp.View.AddOrEditCategoryPage"
+             Background="Beige">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5*"/>
+                <ColumnDefinition Width="90*"/>
+                <ColumnDefinition Width="5*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Text="Kategória hozzáadása"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   FontSize="Large"
+                   Margin="0,20,0,0"
+                   HorizontalOptions="CenterAndExpand"/>
+            <Label Text="A kategória neve"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   VerticalTextAlignment="End"/>
+            <Entry Text="{Binding ActualCategory.CategoryName}"
+                   Grid.Row="2"
+                   Grid.Column="1"/>
+            <StackLayout Grid.Row="3"
+                   Grid.Column="1"
+                   Orientation="Horizontal">
+                <Button x:Name="btnSend" 
+                    Text="Mentés"
+                    Command="{Binding SendMessageCommand }"
+                    Background="lime"/>
+                <Button x:Name="btnBackPage" 
+                    Text="Vissza"
+                    Clicked="btnBackPage_Clicked"
+                    Background="Lavender"/>
+            </StackLayout>
+
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
